@@ -1,6 +1,6 @@
 package site.nomoreparties.stellarburgers.models.orders;
 
-public class OrderResponse {
+public class OrderCreateResponse {
     /**
      * POJO ответа на запрос создания заказа
      */
@@ -9,26 +9,26 @@ public class OrderResponse {
     private String name;
     private Order order;
 
-    public OrderResponse() {
+    public OrderCreateResponse() {
     }
 
-    public OrderResponse(boolean success, String name, Order order) {
+    public OrderCreateResponse(boolean success, String name, Order order) {
         this.success = success;
         this.name = name;
         this.order = order;
     }
 
-    public OrderResponse setSuccess(boolean success) {
+    public OrderCreateResponse setSuccess(boolean success) {
         this.success = success;
         return this;
     }
 
-    public OrderResponse setName(String name) {
+    public OrderCreateResponse setName(String name) {
         this.name = name;
         return this;
     }
 
-    public OrderResponse setOrder(Order order) {
+    public OrderCreateResponse setOrder(Order order) {
         this.order = order;
         return this;
     }

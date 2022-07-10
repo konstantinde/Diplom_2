@@ -17,7 +17,7 @@ public class OrdersClient extends BaseRestClient {
     private static final String INGREDIENTS_PATH = "/api/ingredients";
 
 
-    @Step("Создание заказа с ингридиентами {ingredientsHashList}")
+    @Step("Создание заказа с ингридиентами {orderCreateRequest.ingredients}")
     public ValidatableResponse createOrder(OrderCreateRequest orderCreateRequest, String bearerToken) {
         return given()
                 .spec(getOrderCreateRequest(bearerToken))

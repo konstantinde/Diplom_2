@@ -2,6 +2,7 @@ package site.nomoreparties.stellarburgers.users;
 
 import io.qameta.allure.Description;
 import io.restassured.response.ValidatableResponse;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,12 +14,10 @@ import site.nomoreparties.stellarburgers.models.users.User;
 
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.apache.http.HttpStatus.SC_UNAUTHORIZED;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 public class UserLoginTest {
 
+    SoftAssertions softAssertions = new SoftAssertions();
     UserClient userClient;
     User user;
     RegisterLoginResponse registerResponse;
@@ -52,8 +51,9 @@ public class UserLoginTest {
         ValidatableResponse loginResponse = userClient.login(userCredential);
         this.loginResponse = loginResponse.extract().as(RegisterLoginResponse.class);
 
-        assertEquals(loginResponse.extract().statusCode(), SC_OK);
-        assertTrue(this.loginResponse.isSuccess());
+        softAssertions.assertThat(loginResponse.extract().statusCode()).isEqualTo(SC_OK);
+        softAssertions.assertThat(this.loginResponse.isSuccess()).isTrue();
+        softAssertions.assertAll();
     }
 
     @Test
@@ -65,8 +65,9 @@ public class UserLoginTest {
         ValidatableResponse loginResponse = userClient.login(userCredential);
         resultResponse = loginResponse.extract().as(ResultResponse.class);
 
-        assertEquals(loginResponse.extract().statusCode(), SC_UNAUTHORIZED);
-        assertFalse(resultResponse.isSuccess());
-        assertEquals(resultResponse.getMessage(), "email or password are incorrect");
+        softAssertions.assertThat(loginResponse.extract().statusCode()).isEqualTo(SC_UNAUTHORIZED);
+        softAssertions.assertThat(resultResponse.isSuccess()).isFalse();
+        softAssertions.assertThat(resultResponse.getMessage()).isEqualTo("email or password are incorrect");
+        softAssertions.assertAll();
     }
 }

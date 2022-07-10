@@ -2,6 +2,7 @@ package site.nomoreparties.stellarburgers.users;
 
 import io.qameta.allure.Description;
 import io.restassured.response.ValidatableResponse;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,12 +14,10 @@ import site.nomoreparties.stellarburgers.models.users.User;
 
 import static org.apache.http.HttpStatus.SC_FORBIDDEN;
 import static org.apache.http.HttpStatus.SC_OK;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 public class UserRegisterTest {
 
+    SoftAssertions softAssertions = new SoftAssertions();
     UserClient userClient;
     User user;
     RegisterLoginResponse registerResponse;
@@ -50,8 +49,9 @@ public class UserRegisterTest {
         ValidatableResponse registerResponse = userClient.register(user);
         this.registerResponse = registerResponse.extract().as(RegisterLoginResponse.class);
 
-        assertEquals(registerResponse.extract().statusCode(), SC_OK);
-        assertTrue(this.registerResponse.isSuccess());
+        softAssertions.assertThat(registerResponse.extract().statusCode()).isEqualTo(SC_OK);
+        softAssertions.assertThat(this.registerResponse.isSuccess()).isTrue();
+        softAssertions.assertAll();
     }
 
     @Test
@@ -63,9 +63,10 @@ public class UserRegisterTest {
         ValidatableResponse registerExistUser = userClient.register(user);
         resultResponse = registerExistUser.extract().as(ResultResponse.class);
 
-        assertEquals(registerExistUser.extract().statusCode(), SC_FORBIDDEN);
-        assertFalse(resultResponse.isSuccess());
-        assertEquals("User already exists", resultResponse.getMessage());
+        softAssertions.assertThat(registerExistUser.extract().statusCode()).isEqualTo(SC_FORBIDDEN);
+        softAssertions.assertThat(resultResponse.isSuccess()).isFalse();
+        softAssertions.assertThat(resultResponse.getMessage()).isEqualTo("User already exists");
+        softAssertions.assertAll();
     }
 
     @Test
@@ -74,9 +75,10 @@ public class UserRegisterTest {
         ValidatableResponse registerResponse = userClient.register(user.setEmail(null));
         resultResponse = registerResponse.extract().as(ResultResponse.class);
 
-        assertEquals(registerResponse.extract().statusCode(), SC_FORBIDDEN);
-        assertFalse(resultResponse.isSuccess());
-        assertEquals(USER_REGISTER_MSG_FALSE, resultResponse.getMessage());
+        softAssertions.assertThat(registerResponse.extract().statusCode()).isEqualTo(SC_FORBIDDEN);
+        softAssertions.assertThat(resultResponse.isSuccess()).isFalse();
+        softAssertions.assertThat(resultResponse.getMessage()).isEqualTo(USER_REGISTER_MSG_FALSE);
+        softAssertions.assertAll();
     }
 
     @Test
@@ -85,9 +87,10 @@ public class UserRegisterTest {
         ValidatableResponse registerResponse = userClient.register(user.setEmail(""));
         resultResponse = registerResponse.extract().as(ResultResponse.class);
 
-        assertEquals(registerResponse.extract().statusCode(), SC_FORBIDDEN);
-        assertFalse(resultResponse.isSuccess());
-        assertEquals(USER_REGISTER_MSG_FALSE, resultResponse.getMessage());
+        softAssertions.assertThat(registerResponse.extract().statusCode()).isEqualTo(SC_FORBIDDEN);
+        softAssertions.assertThat(resultResponse.isSuccess()).isFalse();
+        softAssertions.assertThat(resultResponse.getMessage()).isEqualTo(USER_REGISTER_MSG_FALSE);
+        softAssertions.assertAll();
     }
 
     @Test
@@ -96,9 +99,10 @@ public class UserRegisterTest {
         ValidatableResponse registerResponse = userClient.register(user.setName(null));
         resultResponse = registerResponse.extract().as(ResultResponse.class);
 
-        assertEquals(registerResponse.extract().statusCode(), SC_FORBIDDEN);
-        assertFalse(resultResponse.isSuccess());
-        assertEquals(USER_REGISTER_MSG_FALSE, resultResponse.getMessage());
+        softAssertions.assertThat(registerResponse.extract().statusCode()).isEqualTo(SC_FORBIDDEN);
+        softAssertions.assertThat(resultResponse.isSuccess()).isFalse();
+        softAssertions.assertThat(resultResponse.getMessage()).isEqualTo(USER_REGISTER_MSG_FALSE);
+        softAssertions.assertAll();
     }
 
     @Test
@@ -107,9 +111,10 @@ public class UserRegisterTest {
         ValidatableResponse registerResponse = userClient.register(user.setName(""));
         resultResponse = registerResponse.extract().as(ResultResponse.class);
 
-        assertEquals(registerResponse.extract().statusCode(), SC_FORBIDDEN);
-        assertFalse(resultResponse.isSuccess());
-        assertEquals(USER_REGISTER_MSG_FALSE, resultResponse.getMessage());
+        softAssertions.assertThat(registerResponse.extract().statusCode()).isEqualTo(SC_FORBIDDEN);
+        softAssertions.assertThat(resultResponse.isSuccess()).isFalse();
+        softAssertions.assertThat(resultResponse.getMessage()).isEqualTo(USER_REGISTER_MSG_FALSE);
+        softAssertions.assertAll();
     }
 
     @Test
@@ -118,9 +123,10 @@ public class UserRegisterTest {
         ValidatableResponse registerResponse = userClient.register(user.setPassword(null));
         resultResponse = registerResponse.extract().as(ResultResponse.class);
 
-        assertEquals(registerResponse.extract().statusCode(), SC_FORBIDDEN);
-        assertFalse(resultResponse.isSuccess());
-        assertEquals(USER_REGISTER_MSG_FALSE, resultResponse.getMessage());
+        softAssertions.assertThat(registerResponse.extract().statusCode()).isEqualTo(SC_FORBIDDEN);
+        softAssertions.assertThat(resultResponse.isSuccess()).isFalse();
+        softAssertions.assertThat(resultResponse.getMessage()).isEqualTo(USER_REGISTER_MSG_FALSE);
+        softAssertions.assertAll();
     }
 
     @Test
@@ -129,8 +135,9 @@ public class UserRegisterTest {
         ValidatableResponse registerResponse = userClient.register(user.setPassword(""));
         resultResponse = registerResponse.extract().as(ResultResponse.class);
 
-        assertEquals(registerResponse.extract().statusCode(), SC_FORBIDDEN);
-        assertFalse(resultResponse.isSuccess());
-        assertEquals(USER_REGISTER_MSG_FALSE, resultResponse.getMessage());
+        softAssertions.assertThat(registerResponse.extract().statusCode()).isEqualTo(SC_FORBIDDEN);
+        softAssertions.assertThat(resultResponse.isSuccess()).isFalse();
+        softAssertions.assertThat(resultResponse.getMessage()).isEqualTo(USER_REGISTER_MSG_FALSE);
+        softAssertions.assertAll();
     }
 }

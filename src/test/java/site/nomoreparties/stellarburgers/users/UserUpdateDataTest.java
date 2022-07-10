@@ -2,6 +2,7 @@ package site.nomoreparties.stellarburgers.users;
 
 import io.qameta.allure.Description;
 import io.restassured.response.ValidatableResponse;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +22,7 @@ import static org.junit.Assert.assertTrue;
 
 public class UserUpdateDataTest {
 
+    SoftAssertions softAssertions = new SoftAssertions();
     UserClient userClient;
     User user;
     RegisterLoginResponse registerResponse;
@@ -62,11 +64,12 @@ public class UserUpdateDataTest {
         User loginUser = new User(user.getEmail(), user.getPassword());
         loginResponse = userClient.login(loginUser).extract().as(RegisterLoginResponse.class);
 
-        assertEquals(updateUserDataResponse.extract().statusCode(), SC_OK);
-        assertTrue(this.updateUserDataResponse.isSuccess());
-        assertTrue(this.loginResponse.isSuccess());
-        assertEquals(this.updateUserDataResponse.getUser().getEmail(), user.getEmail());
-        assertEquals(this.updateUserDataResponse.getUser().getName(), user.getName());
+        softAssertions.assertThat(updateUserDataResponse.extract().statusCode()).isEqualTo(SC_OK);
+        softAssertions.assertThat(this.updateUserDataResponse.isSuccess()).isTrue();
+        softAssertions.assertThat(this.loginResponse.isSuccess()).isTrue();
+        softAssertions.assertThat(this.updateUserDataResponse.getUser().getEmail()).isEqualTo(user.getEmail());
+        softAssertions.assertThat(this.updateUserDataResponse.getUser().getName()).isEqualTo(user.getName());
+        softAssertions.assertAll();
     }
 
     @Test
@@ -83,11 +86,13 @@ public class UserUpdateDataTest {
         User loginUser = new User(user.getEmail(), user.getPassword());
         ResultResponse resultLogin = userClient.login(loginUser).extract().as(ResultResponse.class);
 
-        assertEquals(updateUserDataResponse.extract().statusCode(), SC_UNAUTHORIZED);
-        assertFalse(this.resultResponse.isSuccess());
-        assertEquals(this.resultResponse.getMessage(), "You should be authorised");
-        assertFalse(resultLogin.isSuccess());
-        assertEquals(resultLogin.getMessage(), "email or password are incorrect");
+        softAssertions.assertThat(updateUserDataResponse.extract().statusCode()).isEqualTo(SC_UNAUTHORIZED);
+        softAssertions.assertThat(this.resultResponse.isSuccess()).isFalse();
+        softAssertions.assertThat(this.resultResponse.getMessage()).isEqualTo("You should be authorised");
+        softAssertions.assertThat(resultLogin.isSuccess()).isFalse();
+        softAssertions.assertThat(resultLogin.getMessage()).isEqualTo("email or password are incorrect");
+        softAssertions.assertAll();
+
     }
 
     @Test
@@ -105,8 +110,9 @@ public class UserUpdateDataTest {
         // Удаляем второго пользователя
         userClient.delete(existUserRegister.getAccessToken());
 
-        assertEquals(updateUserExistMailResponse.extract().statusCode(), SC_FORBIDDEN);
-        assertFalse(this.resultResponse.isSuccess());
-        assertEquals(this.resultResponse.getMessage(), "User with such email already exists");
+        softAssertions.assertThat(updateUserExistMailResponse.extract().statusCode()).isEqualTo(SC_FORBIDDEN);
+        softAssertions.assertThat(this.resultResponse.isSuccess()).isFalse();
+        softAssertions.assertThat(this.resultResponse.getMessage()).isEqualTo("User with such email already exists");
+        softAssertions.assertAll();
     }
 }

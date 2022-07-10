@@ -13,7 +13,7 @@ import site.nomoreparties.stellarburgers.helpers.UserGenerator;
 import site.nomoreparties.stellarburgers.models.ResultResponse;
 import site.nomoreparties.stellarburgers.models.orders.IngredientsData;
 import site.nomoreparties.stellarburgers.models.orders.OrderCreateRequest;
-import site.nomoreparties.stellarburgers.models.orders.OrderResponse;
+import site.nomoreparties.stellarburgers.models.orders.OrderCreateResponse;
 import site.nomoreparties.stellarburgers.models.users.RegisterLoginResponse;
 import site.nomoreparties.stellarburgers.models.users.User;
 
@@ -32,7 +32,7 @@ public class OrderCreateTest {
     OrdersClient ordersClient;
     User user;
     RegisterLoginResponse registerResponse;
-    OrderResponse orderResponse;
+    OrderCreateResponse orderResponse;
     ResultResponse resultResponse;
     OrderCreateRequest orderCreateRequest;
 
@@ -70,7 +70,7 @@ public class OrderCreateTest {
         // Создаем заказ с авторизацией
         ValidatableResponse createUserOrder = ordersClient.createOrder(orderCreateRequest,
                 registerResponse.getAccessToken());
-        orderResponse = createUserOrder.extract().as(OrderResponse.class);
+        orderResponse = createUserOrder.extract().as(OrderCreateResponse.class);
 
         softAssertions.assertThat(createUserOrder.extract().statusCode()).isEqualTo(SC_OK);
         softAssertions.assertThat(orderResponse.isSuccess()).isTrue();
@@ -86,7 +86,7 @@ public class OrderCreateTest {
     public void shouldCreateOrderWithoutAuthorization() {
         // Создаем заказ без авторизации
         ValidatableResponse createUserOrder = ordersClient.createOrder(orderCreateRequest,"");
-        orderResponse = createUserOrder.extract().as(OrderResponse.class);
+        orderResponse = createUserOrder.extract().as(OrderCreateResponse.class);
 
         softAssertions.assertThat(createUserOrder.extract().statusCode()).isEqualTo(SC_OK);
         softAssertions.assertThat(orderResponse.isSuccess()).isTrue();
