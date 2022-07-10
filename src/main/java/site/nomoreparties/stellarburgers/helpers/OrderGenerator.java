@@ -1,7 +1,7 @@
 package site.nomoreparties.stellarburgers.helpers;
 
-import site.nomoreparties.stellarburgers.models.orders.CreateOrderRequest;
 import site.nomoreparties.stellarburgers.models.orders.Ingredient;
+import site.nomoreparties.stellarburgers.models.orders.IngredientsData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,12 +9,12 @@ import java.util.Random;
 
 public class OrderGenerator {
 
-    public static ArrayList<String> getRandomOrder(List<Ingredient> ingredients) {
+    public static List<String> getRandomOrder(List<Ingredient> ingredients) {
         Random rand = new Random();
-        ArrayList<String> ingredientsHashList = new ArrayList<>();
-        ArrayList<String> bunList = new ArrayList<>();
-        ArrayList<String> mainList = new ArrayList<>();
-        ArrayList<String> sauceList = new ArrayList<>();
+        List<String> ingredientsHashList = new ArrayList<>();
+        List<String> bunList = new ArrayList<>();
+        List<String> mainList = new ArrayList<>();
+        List<String> sauceList = new ArrayList<>();
         for (Ingredient ingredient : ingredients) {
             switch (ingredient.getType()) {
                 case "bun":

@@ -2,6 +2,9 @@ package site.nomoreparties.stellarburgers.clients;
 
 import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
+import site.nomoreparties.stellarburgers.models.orders.OrderCreateRequest;
+
+import java.util.ArrayList;
 
 import static io.restassured.RestAssured.given;
 
@@ -11,15 +14,15 @@ public class OrdersClient extends BaseRestClient {
      */
 
     private static final String ORDERS_PATH = "/api/orders/";
-    private static final String INGREDIENTS_PATH = "/api/ingredients/";
+    private static final String INGREDIENTS_PATH = "/api/ingredients";
 
 
-    @Step("Создание заказа с ингридиентами {order}")
-    public ValidatableResponse createOrder(Ingredients ingredients, String bearerToken) {
+    @Step("Создание заказа с ингридиентами {ingredientsHashList}")
+    public ValidatableResponse createOrder(OrderCreateRequest orderCreateRequest, String bearerToken) {
         return given()
                 .spec(getOrderCreateRequest(bearerToken))
                 .log().all()
-                .body(ingredients)
+                .body(orderCreateRequest)
                 .when()
                 .post(ORDERS_PATH)
                 .then()
