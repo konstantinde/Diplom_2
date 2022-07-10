@@ -39,7 +39,7 @@ public class UserClient extends BaseRestClient {
                 .log().all();
     }
 
-    @Step("Удаление пользователя {user}")
+    @Step("Удаление пользователя")
     public void delete(String bearerToken) {
         given()
                 .spec(getDeleteUserRequest(bearerToken))

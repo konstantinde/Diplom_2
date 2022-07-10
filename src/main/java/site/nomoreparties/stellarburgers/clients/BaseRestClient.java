@@ -41,4 +41,24 @@ public class BaseRestClient {
                 .setBaseUri(BASE_URL)
                 .build();
     }
+
+    protected RequestSpecification getOrderCreateRequest(String bearToken) {
+        return new RequestSpecBuilder()
+                .addHeader("Authorization", bearToken)
+                .addFilter(new AllureRestAssured())
+                .setContentType(JSON)
+                .setAccept(ANY)
+                .setBaseUri(BASE_URL)
+                .build();
+    }
+
+    protected RequestSpecification getUserOrdersListRequest(String bearToken) {
+        return new RequestSpecBuilder()
+                .addHeader("Authorization", bearToken)
+                .addFilter(new AllureRestAssured())
+                .setContentType(JSON)
+                .setAccept(ANY)
+                .setBaseUri(BASE_URL)
+                .build();
+    }
 }

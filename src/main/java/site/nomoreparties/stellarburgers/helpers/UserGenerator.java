@@ -3,8 +3,6 @@ package site.nomoreparties.stellarburgers.helpers;
 import com.github.javafaker.Faker;
 import site.nomoreparties.stellarburgers.models.users.User;
 
-import java.util.Locale;
-
 public class UserGenerator {
     /**
      * Генератор случайных данных пользователей для регистрации
